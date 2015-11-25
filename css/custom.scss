@@ -1,0 +1,52 @@
+.present {
+    .twilight-zone {
+        font-family: 'TwyliteZone' !important;
+        color: white !important;
+        text-shadow: none !important;
+        transition: all 2.5s;
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.future {
+    .twilight-zone {
+        transform: scale(0.1);
+        opacity: 0;
+    }
+}
+
+
+.browser-support {
+    td:first-child {
+        background: transparent;
+        text-align: left !important;
+        &:before {
+            content: '';
+        }
+    }
+    td {
+        background: #AAFFB5;
+        text-align: center !important;
+        &:before {
+            content: '\2713';
+        }
+    }
+    td.n {
+        background: #FFAAAA;
+        &:before {
+            content: '\2715';
+        }
+    }
+}
+
+.transpiler-logos {;
+
+    .transpiler-logo {
+        border: none !important;
+        box-shadow: 0 0 0 transparent !important;
+        width: 40%;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}

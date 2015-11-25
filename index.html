@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js – The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <!-- WHAT IS ECMASCRIPT -->
+                <section data-markdown>
+                    <script type="text/template">
+                        #What is ECMA2015 /  ES6 / ES2015?
+                    </script>
+                </section>
+				<section data-markdown>
+                    <script type="text/template"  data-separator-vertical="^\n">
+                        >"... the sixth edition of the ECMAScript Language Specification. Since publication of the first edition in 1997, ECMAScript has grown to be one of the world’s most widely used general purpose programming languages."[^n]
+
+                        *ECMAScript is better known as...* <!-- .element: class="fragment" -->
+
+                        ##JavaScript <!-- .element: class="fragment" -->
+                    </script>
+				</section>
+				<section data-markdown>
+				    <script type="text/template">
+                        ###History
+                        ![ECMAScript History](/images/ecmascript-history.png)
+                        * ES6 was officially released in June 2015
+                        * Most modern browsers support at least some features, but it will take years to incorporate all of them <!-- .element: class="fragment" -->
+                        * ES6 is a superset of ES5 <!-- .element: class="fragment" -->
+                    </script>
+				</section>
+                <section>
+                        <h2>A Super-wha?</h2>
+
+                        JavaScript is <strong>not</strong> versioned. Since JavaScript is such an integral part of the web, it needs to be backwards compatible with previous specifications.
+
+                        <p class="fragment">That means your old Geocities / Angelfire page <strong><i>should</i></strong> still work.<br>
+                            <img src="/images/surf-the-web.gif">
+                        </p>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        # So what's new?
+                    </script>
+                </section>
+
+				<section data-markdown>
+                    <script type="text/template">
+                        ##Symbols!
+                        Symbols are a new primitive type.
+
+                        ```js
+                            var MyClass = (function() {
+                                var key = Symbol("key");
+
+                                function MyClass(privateData) {
+                                    this[key] = privateData;
+                                }
+
+                                MyClass.prototype = {
+                                    doStuff: function() {
+                                        return this[key];
+                                    }
+                                };
+
+                                return MyClass;
+                            })();
+                            var c = new MyClass("hello")
+                            c["key"] === undefined // true
+                        ```
+                        [https://github.com/lukehoban/es6features#symbols](https://github.com/lukehoban/es6features#symbols)
+                    </script>
+				</section>
+				<section data-markdown>
+                    <script type="text/template">
+                        ##Variables!
+                        There is now the `let` and `const` variable.
+
+                        ```js
+                            let ten = 10;
+                            const TWENTY = 20;
+                        ```
+
+                        With these new variables we can use **block scope**.
+
+                        ```js
+                            {
+                                let ten = 10;
+                                const TWENTY = 20;
+                                console.log(ten); // 10
+                                console.log(TWENTY) // 20
+                            }
+
+                            ten; // Reference Error
+                            TWENTY; // Also a Reference Error
+                        ```
+                    </script>
+				</section>
+				<section data-markdown>
+                    <script type="text/template">
+                        ## But wait...
+                        With `var` it works like this...
+                        ```js
+                            function giveMeFive () {
+                                console.log(five); // undefined
+                                var five = 5;
+                                return five;
+                            }
+                        ```
+                        But with `let` it throws an Error.
+                        ```js
+                            function giveMeFive () {
+                                console.log(five); // Reference Error
+                                let five = 5;
+                                return five;
+                            }
+                        ```
+
+                        *This is because of something called...*<!-- .element: class="fragment" -->
+                    </script>
+				</section>
+                <section  data-background="/images/space-black-background.jpg">
+                    <h1 class="twilight-zone">The Temporal Dead Zone</h1>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
+                        These new variable types are **not** hoisted to the top like `var` is. Use the variables only after defining them.
+
+                        ```js
+                            // No
+                            {
+                                three; // Error
+                                let three = 3;
+                            }
+
+                            // Yes
+                            {
+                                let three = 3;
+                                three;
+                            }
+                        ```
+                    </script>
+				</section>
+
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Method Shortcuts
+
+                        You can define methods without the function keyword.
+
+                        ```js
+                            // Old way
+                            let obj = {
+                                a: function(){ },
+                                b: function(){ },
+                                c: function(){ }
+                            };
+
+                            // New way - saving 9 characters is awesome
+                            let obj = {
+                                a(){ },
+                                b(){ },
+                                c(){ }
+                            };
+
+                        ```
+                    </script>
+				</section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Introducing Arrow Functions
+
+                        Heavily inspired from *CoffeeScript*, JavaScript now supports arrow functions.
+
+                        ```js
+                            // Old way
+                            let doSomething = function() {
+                                return 'something';
+                            }
+
+                            // New, cooler way
+                            let doSomething = () => {
+                                return 'something';
+                            }
+                        ```
+                    </script>
+				</section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ##### How arrow functions can be used
+
+                        ```js
+                            // Anonymous Function with no parameters (needs parenthesis)
+                            () => { }
+
+                            // One parameter (does not need parenthesis)
+                            myParam1 => { }
+
+                            // Multiple parameters (needs parenthesis)
+                            (myParam1, myParam2, myParam3) => { }
+                        ```
+
+                        Returns are implied if followed up with an expression
+
+                        ```js
+                            let numbers = [1, 2, 3];
+                            numbers.map( nums => nums * 3 );  // [3, 6, 9] - look no returns
+                        ```
+                    </script>
+				</section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Default Arguments
+
+                        Functions can now have default arguments defined
+
+                        ```js
+                            // Old way
+                            function beCool(name, message){
+                                name = name || 'Jo';
+                                message = message || ', be cool';
+                                return name + message;
+                            }
+                            beCool(); // Jo, be cool.
+
+                            // New way
+                            function beCool(name = 'Jo', message = ', be cool.'){
+                                return name + message;
+                            }
+                            beCool(); // Jo, be cool.
+
+                        ```
+                    </script>
+				</section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ## JavaScript Classes
+
+                        There's now syntactic sugar on the JavaScript's prototype chain which makes it look similar to more Object Oriented languages.
+
+                        ```js
+                            class Person{
+                                constructor(name, age){
+                                    this.name = name;
+                                    this.age = age;
+                                }
+
+                                speak(){
+                                    console.log(`I am a person named ${this.name}`)
+                                }
+
+                                age(){
+                                    this.age++;
+                                    console.log('I feel older.');
+                                }
+                            }
+                        ```
+                    </script>
+				</section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ##### What's really going on here.
+
+                        ```js
+                            // The new way
+                            class Person{
+                                constructor(name, age){ }
+                                speak(){ }
+                                age(){ }
+                            }
+                            var someone = new Person('Bob Jones', 97);
+
+                            // === Below is what is going on behind the scenes ===
+                            function Person(name, age){ }
+
+                            Person.prototype.speak = function(){};
+                            Person.prototype.age = function(){};
+
+                            var someone = new Person('Bob Jones', 97);
+                        ```
+                    </script>
+				</section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ##### Class Static Methods
+                        ```js
+                            // Old way
+                            function Dog() {}
+                            Dog.walk = function() {
+                                console.log('Walking around the neighborhood.');
+                            }
+
+                            // New way
+                            class Dog {
+                                constructor() { }
+                                static walk() {
+                                    console.log('Walking around the neighborhood.');
+                                }
+                            }
+                        ```
+                    </script>
+                </section>
+                <section data-markdown>
+				    <script type="text/template">
+                        ##### Subclassing
+                        ```js
+                            class Dog {
+                                constructor(name){
+                                    this.name = name;
+                                }
+                                bark(){ return 'Woof.'; }
+                            }
+
+                            class RobotDog extends Dog {
+                                constructor(name){
+                                    super(name);
+                                }
+                                bark(){ return 'zsssssst' + super.bark(); }
+                            }
+
+                            var henry = new RobotDog('Henry');
+                            henry.bark(); // zsssssst Woof.
+                        ```
+				    </script>
+				</section>
+
+				<section data-markdown>
+				    <script type="text/template">
+                        ## Built-in Promises
+
+                        ```js
+                            // Set up the promise
+                            var promise = new Promise( (resolve, reject) => {
+                                if (thingWorked) {
+                                    resolve('Worked!');
+                                } else {
+                                    reject('It borked.');
+                                }
+                            });
+
+                            // *Then* use it
+                            promise.then((result) => {
+                                console.log(result); // Worked!
+                            }).catch((err) => {
+                                console.log(err); // It borked.
+                            });
+
+                        ```
+				    </script>
+				</section>
+
+				<section data-markdown>
+				    <script type="text/template">
+                        ## Modules
+
+                        >In ECMAScript 6, modules are stored in files. There is exactly one module per file and one file per module. You have two ways of exporting things from a module. These two ways can be mixed, but it is usually better to use them separately.
+
+                        [Exploring ES6 by Axel Rauschmayer](http://exploringjs.com/es6/ch_modules.html)
+				    </script>
+				</section>
+				<section data-markdown>
+				    <script type="text/template">
+                        ###### Multiple exports from other modules (AMD syntax)
+                        *Lib.js*
+                        ```js
+                            export const sqrt = Math.sqrt;
+                            export function square(x) {
+                                return x * x;
+                            }
+                            export function diag(x, y) {
+                                return sqrt(square(x) + square(y));
+                            }
+                        ```
+
+                        *Main.js*
+                        ```js
+                            import { square, diag } from 'lib';
+                            // Can also import everything by doing:
+                            // import * as lib from 'lib';
+                            console.log(square(11)); // 121
+                            console.log(diag(4, 3)); // 5
+                        ```
+				    </script>
+				</section>
+                <section data-markdown>
+                    <script type="text/template">
+                        ##### Setting up default exports
+
+                        *Function.js*
+                        ```js
+                            export default function () { ... };
+                        ```
+
+                        *Main.js*
+                        ```js
+                            import myFunc from 'myFunc';
+                            myFunc();
+                        ```
+                    </script>
+                </section>
+
+
+				<section data-markdown>
+				    <script type="text/template">
+                        ## Template strings
+
+                        Using backticks (``) we can now do multi-line strings!
+
+                        ```js
+                            // Old way
+                            var nurseryRhyme = 'Jack and Jill went up the hill' +
+                                               'To fetch a pail of water.' +
+                                               'Jack fell down and broke his crown,' +
+                                               'And Jill came tumbling after.'
+
+                            // New way
+                            var nurseryRhyme = `Jack and Jill went up the hill
+                                               To fetch a pail of water.
+                                               Jack fell down and broke his crown,
+                                               And Jill came tumbling after.`
+                        ```
+				    </script>
+				</section>
+				<section data-markdown>
+				    <script type="text/template">
+                        ##### String interpolation
+                        ```js
+                            var jack = 'Jack',
+                                jill = function(){ return 'Jill'; };
+
+                            // Old way
+                            var nurseryRhyme = jack + ' and ' + jill() + ' went up the hill' +
+                                               'To fetch a pail of water.' +
+                                               jack + ' fell down and broke his crown,' +
+                                               'And ' + jill() + ' came tumbling after.'
+
+                            // New way
+                            var nurseryRhyme = `${jack} and ${jill()} went up the hill
+                                               To fetch a pail of water.
+                                               ${jack} fell down and broke his crown,
+                                               And ${jill()} came tumbling after.`
+                        ```
+				    </script>
+				</section>
+				<section>
+                    <h3>Current Browser Support (Nov 2015)</h3>
+                    <table class="browser-support">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Chrome</th>
+                                <th>Firefox</th>
+                                <th>IE11</th>
+                                <th>Edge</th>
+                                <th>Safari</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Symbols</td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Const</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                            </tr>
+                            <tr>
+                                <td>Let</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                            </tr>
+                            <tr>
+                                <td>Arrow fn</td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                                <td></td>
+                                <td class="n"></td>
+                            </tr>
+                            <tr>
+                                <td>Default args</td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                            </tr>
+                            <tr>
+                                <td>Class shorthand</td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+				</section>
+				<section>
+                    <h3>Current Browser Support (Nov 2015)</h3>
+                    <table class="browser-support">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Chrome</th>
+                                <th>Firefox</th>
+                                <th>IE11</th>
+                                <th>Edge</th>
+                                <th>Safari</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Promises</td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Modules</td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                                <td class="n"></td>
+                            </tr>
+                            <tr>
+                                <td>Template Str</td>
+                                <td></td>
+                                <td></td>
+                                <td class="n"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    Source: <a href="https://kangax.github.io/compat-table/es6/">https://kangax.github.io/compat-table/es6/</a>
+				</section>
+
+				<section>
+                    <h2>Don't want to wait? Use a transpiler</h2>
+                    <p class="transpiler-logos">
+                        <a href="https://babeljs.io/">
+                            <img src="/images/babel.svg" class="transpiler-logo">
+                        </a>
+                        <a href="https://github.com/google/traceur-compiler">
+                            <img src="/images/traceur.svg" class="transpiler-logo">
+                        </a>
+				</section>
+
+				<section>
+                    <h1>End<h1>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
